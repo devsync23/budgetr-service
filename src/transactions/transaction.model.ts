@@ -1,23 +1,21 @@
-import { model, Schema, Types } from 'mongoose'
+import { model, Schema, Types } from 'mongoose';
 
-const TranscationSchema = new Schema({
-  status: {
+const TransactionSchema = new Schema({
+  date: {
+    type: Date,
+    default: Date.now,
+    required: true
+  },
+  merchants: {
     type: String,
-    enum: ['placed', 'processing', 'shipped', 'delivered'],
-    require: true,
+    required: true
   },
-  cost: {
-    type: Types.ObjectId,
-    ref: "Product",
-    require: true
-  },
-  buyer: {
-    type: Types.ObjectId,
-    ref: "Customer",
-    require: true
+  price: {
+    type: Number,
+    required: true
   },
 }, {
   timestamps: true
 });
 
-export default model('Transcation', TranscationSchema)
+export default model('Transaction', TransactionSchema);

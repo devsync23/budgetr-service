@@ -31,13 +31,48 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-    res.send(req.url)
+  try {
+    const userId = req.params.userId;
+    const updatedFields = req.body;
+    const user = await User.findByIdAndUpdate(userId, updatedFields, { new: true });
+    if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+    }
+    res.send(user);
+} catch (err) {
+    res.status(500).send({
+        message: err
+    });
+}
 }
 
 export async function archiveUser(req: Request, res: Response) {
-    res.send(req.url)
+  try {
+    const userId = req.params.userId;
+    const user = await User.findByIdAndUpdate(userId, { archived: true }, { new: true });
+    if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+    }
+    res.send(user);
+} catch (err) {
+    res.status(500).send({
+        message: err
+    });
+}
 }
 
+
 export async function deleteUser(req: Request, res: Response) {
-    res.send(req.url)
+  try {
+    const userId = req.params.userId;
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+    }
+    res.send({ message: 'User deleted successfully' });
+} catch (err) {
+    res.status(500).send({
+        message: err
+    });
+}
 }
